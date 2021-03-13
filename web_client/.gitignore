@@ -1,0 +1,24 @@
+### VisualStudioCode ###
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+
+
+# dotenv environment variables file
+.env
+.env.test
+.env*.local
+
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride

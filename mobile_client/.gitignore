@@ -16,7 +16,7 @@ web-build/
 *.env
 
 #App.json
-app.json
+#app.json
 
 # Xcode #
 build/

@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   TouchableOpacity,
@@ -10,32 +9,56 @@ import {
   Image,
   TextInput,
   Alert,
-  Linking,
   Text,
 } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
 //Import userLocation from location Context
 import { useLocation } from "../context/LocationContext";
 import { MaterialIcons } from "@expo/vector-icons";
 
-// import axios from "axios";
+import axios from "axios";
 
 export default SaveScreen = (props) => {
   const { currentUserLocation } = useLocation();
   const { image, imageBase64 } = props.route.params;
   const { navigation } = props;
-  // console.log(props.route.params);
 
   const [caption, setCaption] = useState("");
 
   const cancel = () => {
     navigation.navigate("Camera");
   };
-  //Send Data to server
-  const handleCaption = () => {
-    console.log("hello from handleTweetFunction");
+  const handelNavigation = () => {
     navigation.popToTop();
+  };
+
+  // HTTP REQUEST to server withdata
+  const handleCaption = () => {
+    axios
+      .post("http://localhost:5000/post", {
+        caption,
+        postLocation: currentUserLocation,
+        postPhoto: imageBase64,
+      })
+      .then((res) => {
+        // feedback on success: sucessful upload, alert and navigate to landing screen
+        let date = res.data.date;
+        Alert.alert(
+          "Success Message",
+          `Post was successfully created at: ${res.data.date}`,
+          { text: "OK", onPress: () => navigation.popToTop() }
+        );
+      })
+      .catch((error) => {
+        //  error from server or message error status(400)
+        if (error.res.status === 403) {
+          let errorMessage = error.res.data.msg;
+          Alert.alert("Error Message", `${errorMessage}, Try again`, {
+            text: "OK",
+            onPress: () => navigation.navigate("Camera"),
+          });
+        }
+      });
   };
   return (
     <View style={{ flex: 1 }}>

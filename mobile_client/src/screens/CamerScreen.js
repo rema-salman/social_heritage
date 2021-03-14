@@ -38,7 +38,6 @@ export default CameraScreen = ({ navigation }) => {
 
     // only change screen when state is saved and pass image data as props
     if (image && imageBase64) {
-      console.log("from camera to save");
       navigation.navigate("save", { image, imageBase64 });
     } else
       return (

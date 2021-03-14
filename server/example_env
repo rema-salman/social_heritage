@@ -1,0 +1,7 @@
+API_KEY="your app key"
+AUTH_DOMAIN= "your auth domain"
+DATABASEURL="your db URL"
+PROJECTID="your prject ID"
+STORAGEBUCKET="your storage bucket"
+MESSAGINGSENDERID=" your msg sender"
+APPID="your app ID"

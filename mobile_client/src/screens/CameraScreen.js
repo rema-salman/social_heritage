@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import { Camera } from "expo-camera";
@@ -15,8 +14,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 export default CameraScreen = ({ navigation }) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [camera, setCamera] = useState(null);
-  const [image, setImage] = useState(null);
-  const [imageBase64, setImageBase64] = useState("");
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
@@ -32,10 +29,11 @@ export default CameraScreen = ({ navigation }) => {
       const data = await camera.takePictureAsync({
         base64: true,
       });
-      setImage(data.uri); // use URI in frontend
-      setImageBase64(`data:image/jpeg;base64,${data.base64}`);
+      handelNavigation(data.uri, `data:image/jpeg;base64,${data.base64}`);
     }
+  };
 
+  const handelNavigation = (image, imageBase64) => {
     // only change screen when state is saved and pass image data as props
     if (image && imageBase64) {
       navigation.navigate("save", { image, imageBase64 });

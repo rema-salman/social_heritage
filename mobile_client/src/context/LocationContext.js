@@ -11,7 +11,6 @@ export const LocationProvider = ({ children }) => {
 
   function setUserCurrentLocation(coordinates) {
     setCurrentUserLocation(coordinates);
-    console.log("FROM USER CONTEXT ......" + currentUserLocation);
   }
 
   // passing(exporting) these to other components

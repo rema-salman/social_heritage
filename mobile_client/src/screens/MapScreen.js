@@ -6,17 +6,22 @@ import {
   Dimensions,
   Pressable,
   Text,
+  Alert,
 } from "react-native";
 
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 import { useLocation } from "../context/LocationContext";
+
+import axios from "axios";
 
 export default MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const { setUserCurrentLocation } = useLocation();
+  const [posts, setPosts] = useState([]);
+  const [popupInfo, setPopupInfo] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -28,11 +33,24 @@ export default MapScreen = ({ navigation }) => {
 
       let locationResult = await Location.getCurrentPositionAsync({});
       setLocation(locationResult.coords);
-      console.log(location);
       setUserCurrentLocation(locationResult.coords);
-      //   setErrorMsg(JSON.stringify(location));
 
       // fetch users' locations
+      axios
+        .get("http://localhost:5000/posts")
+        .then((response) => {
+          setPosts(response.data);
+        })
+        .catch((error) => {
+          //  error from server or message error status(400)
+          if (error.res.status === 403) {
+            let errorMessage = error.res.data.msg;
+            Alert.alert("Error Message", `${errorMessage}, Try again`, {
+              text: "OK",
+              onPress: () => navigation.navigate("Camera"),
+            });
+          }
+        });
     })();
   }, []);
 
@@ -41,6 +59,31 @@ export default MapScreen = ({ navigation }) => {
   } else if (location) {
     // setErrorMsg(JSON.stringify(location));
   }
+
+  //////////////  Shows info numeber of posts
+  //////////////  and if one post then show caption
+  const showPopupInfo = (caption, lat, lon) => {
+    let detectedPosts = [];
+    posts.forEach((post) => {
+      if (
+        lat === post.postLocation.latitude &&
+        lon === post.postLocation.longitude
+      ) {
+        detectedPosts.push(post);
+
+        // check if one post then show update state with caption
+        if (detectedPosts.length === 1) {
+          setPopupInfo(`${caption}`);
+        } else setPopupInfo("");
+
+        // ADD ALERT With number and popup
+        Alert.alert(`${detectedPosts.length} Post`, popupInfo, {
+          text: "OK",
+          onPress: () => console.log("OK was pressed"),
+        });
+      }
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -57,14 +100,23 @@ export default MapScreen = ({ navigation }) => {
           }}
           showsUserLocation={true}
         >
-          {/* <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            title="UserLocation"
-            description="desc"
-          /> */}
+          {posts &&
+            posts.map((post, index) => (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: post.postLocation.latitude,
+                  longitude: post.postLocation.longitude,
+                }}
+                onPress={() =>
+                  showPopupInfo(
+                    post.caption,
+                    post.postLocation.latitude,
+                    post.postLocation.longitude
+                  )
+                }
+              />
+            ))}
         </MapView>
       )}
 

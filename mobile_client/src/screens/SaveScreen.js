@@ -25,13 +25,6 @@ export default SaveScreen = (props) => {
 
   const [caption, setCaption] = useState("");
 
-  const cancel = () => {
-    navigation.navigate("Camera");
-  };
-  const handelNavigation = () => {
-    navigation.popToTop();
-  };
-
   // HTTP REQUEST to server withdata
   const handleCaption = () => {
     axios
@@ -46,7 +39,10 @@ export default SaveScreen = (props) => {
         Alert.alert(
           "Success Message",
           `Post was successfully created at: ${res.data.date}`,
-          { text: "OK", onPress: () => navigation.popToTop() }
+          {
+            text: "OK",
+            onPress: () => navigation.popToTop(),
+          }
         );
       })
       .catch((error) => {
@@ -72,7 +68,7 @@ export default SaveScreen = (props) => {
             name="cancel"
             size={40}
             color="black"
-            onPress={cancel}
+            onPress={() => navigation.navigate("Camera")}
           />
           <Image source={{ uri: imageBase64 }} style={styles.pickedImage} />
 

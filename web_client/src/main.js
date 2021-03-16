@@ -1,37 +1,42 @@
 var data = [
   {
     postLocation: {
-      latitude: 832490,
-      longitude: 0573,
+      latitude: 57.70887,
+      longitude: 11.97456,
     },
-    caption: "",
-    postPhoto: "", //url source
+    caption: "Image from a poster",
+    postPhoto: "hesta2.png", //url source
     date: "new Data()", //newDate
   },
   {
     postLocation: {
-      latitude: 832490,
-      longitude: 0573,
+      latitude: 57.7,
+      longitude: 11.97456,
     },
-    caption: "",
-    postPhoto: "", //url source
+    caption: "Drawing by memory",
+    postPhoto: "hesta.png", //url source
+    date: "new Data()", //newDate
+  },
+  {
+    postLocation: {
+      latitude: 57.71767,
+      longitude: 11.97,
+    },
+    caption: "Another drawing by memory 2",
+    postPhoto: "hesta.png", //url source
     date: "new Data()", //newDate
   },
 ];
 
-var langs = [51.505, 51.509865];
-var longs = [-0.09, -0.118092];
 var colors = ["red", "blue"];
 var imgNum = "number of images ";
-var langC = [25, 51.505];
-var longC = [0, -0.09];
-var zoomL = 2;
-var centr = 0;
-var images = ["hesta.png", "hesta2.png"];
-// getLoc(x, "Gothenburg", centr);
-//sets the view
-loadMap(langC[0], longC[0], zoomL);
+var langC = [25, 51.505, 43.37667, 56.87767, 57.70887];
+var longC = [0, -0.09, 24.61667, 14.80906, 11.97456];
+var zoomL = 13;
+//sets the view at the center of the world mad
+loadMap(langC[4], longC[4], zoomL);
 
+//sets the view of the map, markers and popups
 function loadMap(lat, lon, zoom) {
   var mymap = L.map("mapid").setView([lat, lon], zoom);
   var access_token =
@@ -51,9 +56,16 @@ function loadMap(lat, lon, zoom) {
       accessToken: access_token,
     }
   ).addTo(mymap);
+  displayData();
+}
+
+function displayData() {
+  fetch("http://localhost:5000/posts")
+    .then((response) => response.json())
+    .then((data) => console.log(data));
 
   //markers and mopups
-  for (i = 0; i < langs.length; i++) {
+  for (var i = 0; i < data.length; i++) {
     color = "red";
     num = 5;
     if (num < 5) {
@@ -61,60 +73,49 @@ function loadMap(lat, lon, zoom) {
     } else if ((num) => 5) {
       color = "blue";
     }
-    var circle = L.circle([langs[i], longs[i]], {
-      color: colors[i],
-      fillColor: color,
-      fillOpacity: 0.5,
-      radius: 150,
-    }).addTo(mymap);
-
+    //draws a circle at location
+    var circle = L.circle(
+      [data[i].postLocation.latitude, data[i].postLocation.longitude],
+      {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.5,
+        radius: 150,
+      }
+    ).addTo(mymap);
+    //adds popup to this circle
     circle.bindPopup(
       "<h1>Hestagram</h1><img src='" +
-        images[i] +
-        "' alt = 'images' width='50' height='50'><br>" +
-        imgNum +
-        (i + 1) +
+        data[i].postPhoto +
+        "' alt = 'images' class= 'herImg'><br>" +
+        data[i].caption +
+        "<br>" +
+        data[i].date +
+        "<br>" +
+        data.length +
         "<a href = 'gallery.html'>See more</a>"
     );
-    circle.bindTooltip("2", {
-      permanent: true,
-      direction: "left",
-    });
+
+    //the pop up displays on hover intead of onClick as it is by default
     circle.on("mouseover", function (ev) {
       ev.target.openPopup();
     });
   }
 }
 
-//getLoc(y, "Kaylaka");
-//getLoc(z, "Vaxjo");
-
+getSelectedOptionValue();
+//gets the value of choosesn location from the menu with options
 function getSelectedOptionValue() {
   var selectedOption = document.getElementById("optionList").value;
-  console.log(selectedOption);
+
+  newZoom = 13;
   if (selectedOption === 1) {
-    // loadMap(lat, long, zoom);
+    //57.708870, 11.974560 gothenburg
+    console.log(selectedOption);
+    loadMap(51.505, 0, 13); //London
   } else if (selectedOption === 2) {
+    loadMap(43.41667, 24.61667, newZoom); // Kaylaka park
   } else if (selectedOption === 3) {
+    loadMap(56.87767, 14.80906, newZoom); // Vaxjo
   }
 }
-getSelectedOptionValue();
-
-// function getLoc(v, n, g) {
-//   v.addEventListener("click", function () {
-//     var active = v.classList.add("mystyle");
-//     var activeId;
-//     if (active) {
-//       activeId = document.getElementsByClassName("mystyle")[0].id;
-//       console.log(activeId);
-//     }
-//     if (activeId == "got") {
-//       g = 1;
-//       document.getElementById("top-item").innerHTML = "Gothenburg";
-//     }
-//     //document.getElementById("top-item").innerHTML = n;
-//     //document.getElementById("demo").innerHTML = g;
-//     console.log(g);
-//   });
-//   console.log(g);
-// }

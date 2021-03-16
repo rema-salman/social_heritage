@@ -1,8 +1,8 @@
 var data = [
   {
     postLocation: {
-      latitude:  56.87767,
-      longitude: 14.811,
+      latitude: 57.70887,
+      longitude: 11.97456,
     },
     caption: "Image from a poster",
     postPhoto: "hesta2.png", //url source
@@ -10,8 +10,8 @@ var data = [
   },
   {
     postLocation: {
-      latitude:  56.86,
-      longitude: 14.80906,
+      latitude: 57.7,
+      longitude: 11.97456,
     },
     caption: "Drawing by memory",
     postPhoto: "hesta.png", //url source
@@ -19,8 +19,8 @@ var data = [
   },
   {
     postLocation: {
-      latitude:  56.87767,
-      longitude: 14.75,
+      latitude: 57.71767,
+      longitude: 11.97,
     },
     caption: "Another drawing by memory 2",
     postPhoto: "hesta.png", //url source
@@ -28,14 +28,13 @@ var data = [
   },
 ];
 
-
 var colors = ["red", "blue"];
 var imgNum = "number of images ";
-var langC = [25, 51.505, 43.37667, 56.87767];
-var longC = [0, -0.09, 24.61667, 14.80906];
+var langC = [25, 51.505, 43.37667, 56.87767, 57.70887];
+var longC = [0, -0.09, 24.61667, 14.80906, 11.97456];
 var zoomL = 13;
 //sets the view at the center of the world mad
-loadMap(langC[3], longC[3], zoomL);
+loadMap(langC[4], longC[4], zoomL);
 
 //sets the view of the map, markers and popups
 function loadMap(lat, lon, zoom) {
@@ -57,6 +56,13 @@ function loadMap(lat, lon, zoom) {
       accessToken: access_token,
     }
   ).addTo(mymap);
+  displayData();
+}
+
+function displayData() {
+  fetch("http://localhost:5000/posts")
+    .then((response) => response.json())
+    .then((data) => console.log(data));
 
   //markers and mopups
   for (var i = 0; i < data.length; i++) {
@@ -82,16 +88,14 @@ function loadMap(lat, lon, zoom) {
       "<h1>Hestagram</h1><img src='" +
         data[i].postPhoto +
         "' alt = 'images' class= 'herImg'><br>" +
-        data[i].caption +"<br>"+
-        data[i].date +"<br>"+
+        data[i].caption +
+        "<br>" +
+        data[i].date +
+        "<br>" +
         data.length +
         "<a href = 'gallery.html'>See more</a>"
     );
-    //number of images i=on that location
-    /*circle.bindTooltip("2", {
-      permanent: true,
-      direction: "left",
-    });*/
+
     //the pop up displays on hover intead of onClick as it is by default
     circle.on("mouseover", function (ev) {
       ev.target.openPopup();
@@ -106,8 +110,8 @@ function getSelectedOptionValue() {
 
   newZoom = 13;
   if (selectedOption === 1) {
-    //57.708870, 11.974560. gothenburg
-      console.log(selectedOption);
+    //57.708870, 11.974560 gothenburg
+    console.log(selectedOption);
     loadMap(51.505, 0, 13); //London
   } else if (selectedOption === 2) {
     loadMap(43.41667, 24.61667, newZoom); // Kaylaka park

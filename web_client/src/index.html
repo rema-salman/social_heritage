@@ -25,8 +25,8 @@
       #mapid {
         height: 80vh;
       }
-      .herImg{
-        width:50px;
+      .herImg {
+        width: 50px;
         height: auto;
       }
     </style>
@@ -43,63 +43,31 @@
           onchange="getSelectedOptionValue()"
         >
           <option selected>Open this select menu</option>
-          <option value="1">London</option>
-          <option value="2">Kaylaka</option>
-          <option value="3">Vaxjo</option>
+          <option value="1">Gothenburg</option>
+          <option value="2">London</option>
+          <option value="3">Kaylaka</option>
+          <option value="4">Vaxjo</option>
         </select>
-        <!-- <button -->
-        <!-- class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDarkDropdown"
-          aria-controls="navbarNavDarkDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        > -->
-        <!-- <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-          <ul class="navbar-nav" style="margin: auto">
-            <li class="nav-item dropdown">
-              <a
-                id="top-item"
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDarkDropdownMenuLink"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                >Choose a location of heratige to load the map with images</a
-              >
-              <ul id="list"
-                class="dropdown-menu dropdown-menu-dark"
-                aria-labelledby="navbarDarkDropdownMenuLink"
-              >
-                <li id="got" value="1">
-                  <a class="dropdown-item" href="#">Gothenburg</a>
-                </li>
-                <li id="kay" value="2">
-                  <a class="dropdown-item" href="#">Kaylaka</a>
-                </li>
-                <li id="vaj" value="3">
-                  <a id="vaxjo" class="dropdown-item" href="#">Vaxjo</a>
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#"></a></li>
-              </ul>
-            </li>
-          </ul>
-        </div> -->
       </div>
     </nav>
+    <!-- <img id="img" /> -->
+    <div id="card" class="card">
+      <div class="card-body">
+        <h5 id="card-title" class="card-title">.</h5>
+      </div>
+    </div>
     <div id="mapid"></div>
     <p id="demo"></p>
-    <script></script>
-    <script src="main.js"></script>
+
+    <!-- bootstrap & axios CDNs -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Our scripts  -->
+    <script src="main.js"></script>
   </body>
 </html>

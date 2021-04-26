@@ -24,9 +24,7 @@ npm run start
 # Run the mobile_client, then choose platform from bundel builder
 expo start
 
-# Client runs on http://localhost:3000
-# phpmyadmin runs on http://localhost:8081
-# mySql runs on http://localhost:3306
+# Server runs on http://localhost:5000
 ```
 
 ## App Info
